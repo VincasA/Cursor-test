@@ -69,20 +69,21 @@
 			);
 			sourceTree = "<group>";
 		};
-		E76D0F332D52A4E5001B7F1A /* EarnTime */ = {
-			isa = PBXGroup;
-			children = (
-				E76D0F362D52A4E5001B7F1A /* Views */,
-				E76D0F352D52A4E5001B7F1A /* ViewModels */,
-				E76D0F342D52A4E5001B7F1A /* Models */,
-				E76D0F372D52A4E5001B7F1A /* Services */,
-				E76D0F5C2D52A4E5001B7F1A /* Assets.xcassets */,
-				E76D0F5D2D52A4E5001B7F1A /* Preview.xcassets */,
-				E76D0F5B2D52A4E5001B7F1A /* Info.plist */,
-			);
-			path = EarnTime;
-			sourceTree = "<group>";
-		};
+	E76D0F332D52A4E5001B7F1A /* EarnTime */ = {
+		isa = PBXGroup;
+		children = (
+			E76D0F4B2D52A4E5001B7F1A /* App.swift */,
+			E76D0F362D52A4E5001B7F1A /* Views */,
+			E76D0F352D52A4E5001B7F1A /* ViewModels */,
+			E76D0F342D52A4E5001B7F1A /* Models */,
+			E76D0F372D52A4E5001B7F1A /* Services */,
+			E76D0F5C2D52A4E5001B7F1A /* Assets.xcassets */,
+			E76D0F5D2D52A4E5001B7F1A /* Preview.xcassets */,
+			E76D0F5B2D52A4E5001B7F1A /* Info.plist */,
+		);
+		path = EarnTime;
+		sourceTree = "<group>";
+	};
 		E76D0F342D52A4E5001B7F1A /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -105,19 +106,18 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		E76D0F362D52A4E5001B7F1A /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				E76D0F4B2D52A4E5001B7F1A /* App.swift */,
-				E76D0F4C2D52A4E5001B7F1A /* ContentView.swift */,
-				E76D0F4D2D52A4E5001B7F1A /* HomeView.swift */,
-				E76D0F4E2D52A4E5001B7F1A /* StatsView.swift */,
-				E76D0F4F2D52A4E5001B7F1A /* SettingsView.swift */,
-				E76D0F502D52A4E5001B7F1A /* TaskView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
+	E76D0F362D52A4E5001B7F1A /* Views */ = {
+		isa = PBXGroup;
+		children = (
+			E76D0F4C2D52A4E5001B7F1A /* ContentView.swift */,
+			E76D0F4D2D52A4E5001B7F1A /* HomeView.swift */,
+			E76D0F4E2D52A4E5001B7F1A /* StatsView.swift */,
+			E76D0F4F2D52A4E5001B7F1A /* SettingsView.swift */,
+			E76D0F502D52A4E5001B7F1A /* TaskView.swift */,
+		);
+		path = Views;
+		sourceTree = "<group>";
+	};
 		E76D0F372D52A4E5001B7F1A /* Services */ = {
 			isa = PBXGroup;
 			children = (
