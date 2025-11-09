@@ -82,6 +82,12 @@ struct HomeView: View {
                 showNotificationPrompt = true
             }
         }
+        .onChange(of: notificationService.authorizationStatus) { oldValue, newValue in
+            // Auto-dismiss the prompt once authorization is determined
+            if oldValue == .notDetermined && newValue != .notDetermined {
+                showNotificationPrompt = false
+            }
+        }
         .sheet(isPresented: $showNotificationPrompt) {
             notificationPrompt
         }
@@ -180,7 +186,10 @@ struct HomeView: View {
                             title: "+\(session.earnedMinutes) min · \(session.displayName)",
                             subtitle: session.endDate.formatted(date: .abbreviated, time: .shortened),
                             icon: "star.fill",
-                            color: .green
+                            color: .green,
+                            onDelete: {
+                                deleteSession(session)
+                            }
                         )
                     }
                     ForEach(Array(spendLogs.prefix(3))) { log in
@@ -188,7 +197,10 @@ struct HomeView: View {
                             title: "−\(log.minutesUsed) min · \(log.source)",
                             subtitle: log.createdAt.formatted(date: .abbreviated, time: .shortened),
                             icon: "iphone",
-                            color: .orange
+                            color: .orange,
+                            onDelete: {
+                                deleteLog(log)
+                            }
                         )
                     }
                 }
@@ -205,12 +217,15 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Task Category")
                 .font(.headline)
+            
+            // Use menu style to prevent text truncation
             Picker("Task Category", selection: $viewModel.selectedCategory) {
                 ForEach(TaskCategory.allCases) { category in
                     Text(category.displayName).tag(category)
                 }
             }
-            .pickerStyle(.segmented)
+            .pickerStyle(.menu)
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             if viewModel.selectedCategory == .custom {
                 TextField("Custom label", text: $viewModel.customLabel)
@@ -386,8 +401,11 @@ struct HomeView: View {
                 .multilineTextAlignment(.center)
             Button("Enable Notifications") {
                 Task {
+                    // Request authorization - this will show the system dialog
                     await notificationService.requestAuthorization()
-                    showNotificationPrompt = false
+                    // Refresh status to update the published property
+                    await notificationService.refreshAuthorizationStatus()
+                    // The sheet will auto-dismiss via onChange handler when status changes
                 }
             }
             .buttonStyle(.borderedProminent)
@@ -437,6 +455,30 @@ struct HomeView: View {
         let remainder = seconds % 60
         return String(format: "%02d:%02d", minutes, remainder)
     }
+    
+    private func deleteSession(_ session: TaskSession) {
+        session.isArchived = true
+        do {
+            try context.save()
+        } catch {
+            errorMessage = "Could not delete session: \(error.localizedDescription)"
+            showErrorAlert = true
+            // Revert on error
+            session.isArchived = false
+        }
+    }
+    
+    private func deleteLog(_ log: ScreenTimeLog) {
+        log.isArchived = true
+        do {
+            try context.save()
+        } catch {
+            errorMessage = "Could not delete log: \(error.localizedDescription)"
+            showErrorAlert = true
+            // Revert on error
+            log.isArchived = false
+        }
+    }
 }
 
 private struct ActivityRow: View {
@@ -444,6 +486,21 @@ private struct ActivityRow: View {
     let subtitle: String
     let icon: String
     let color: Color
+    let onDelete: (() -> Void)?
+
+    init(
+        title: String,
+        subtitle: String,
+        icon: String,
+        color: Color,
+        onDelete: (() -> Void)? = nil
+    ) {
+        self.title = title
+        self.subtitle = subtitle
+        self.icon = icon
+        self.color = color
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -459,6 +516,15 @@ private struct ActivityRow: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
+        }
+        .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+            if let onDelete = onDelete {
+                Button(role: .destructive) {
+                    onDelete()
+                } label: {
+                    Label("Delete", systemImage: "trash")
+                }
+            }
         }
     }
 }

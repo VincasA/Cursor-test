@@ -280,7 +280,7 @@
 			};
 			name = Debug;
 		};
-		E76D0F5F2D52A4E5001B7F1A /* Release */ = {
+		E76D0F5F2D52A4E5001B7F1B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -386,7 +386,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E76D0F5E2D52A4E5001B7F1A /* Debug */,
-				E76D0F5F2D52A4E5001B7F1A /* Release */,
+				E76D0F5F2D52A4E5001B7F1B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
